@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">FirebaseApiDb</string>
-    <string name="myLogin">MyLogin</string>
-    <string name="became_part_of_the_greatest_adventure">Became Part Of The Greatest Adventure</string>
+    <string name="myLogin">Login</string>
+    <string name="became_part_of_the_greatest_adventure">Find food that makes you happy</string>
     <string name="forgot_password">Forgot your Password?</string>
     <string name="sign_in">Sign in</string>
     <string name="don_t_you_have_an_account">Don\'t you have an account?</string>
     <string name="create">Create</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="re_password">Re-Password</string>
 </resources>

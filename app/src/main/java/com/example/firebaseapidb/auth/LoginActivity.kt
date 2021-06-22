@@ -1,21 +1,68 @@
 package com.example.firebaseapidb.auth
 
+import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.util.Log
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firebaseapidb.R
+import com.example.firebaseapidb.dialogFragment.LoginDialogFragment
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class LoginActivity:AppCompatActivity(R.layout.activity_login) {
     private lateinit var mAuth:FirebaseAuth
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        mAuth = FirebaseAuth.getInstance()
+    private lateinit var loginButton: Button
+    private lateinit var email:TextInputLayout
+    private lateinit var password:TextInputLayout
+    private lateinit var imageButton : ImageButton
+    private lateinit var loginDialogFragment:LoginDialogFragment
+    private lateinit var registerPageTextView: TextView
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mAuth= Firebase.auth
+        email = findViewById(R.id.textInputEmailLayout)
+        imageButton = findViewById(R.id.imageButtonSignIn)
+        password=findViewById(R.id.textInputPasswordLayout)
+        registerPageTextView = findViewById(R.id.createAccountButton)
+        registerPageTextView.setOnClickListener {
+            val intent  = Intent(this,RegisterActivity::class.java)
+            startActivity(intent)
 
-        mAuth.signInWithEmailAndPassword(email,password)
+        }
+        imageButton.setOnClickListener {
+            signIn()
+        }
 
     }
 
 
+
+
+    private fun signIn() {
+        email.error=""
+        password.error = ""
+        if(email.editText?.text.toString().isEmpty()){
+            email.error = "Enter Email Address"
+            return
+        }
+        if (password.editText?.text.toString().isEmpty()) {
+            password.error = "Enter Password"
+            return
+        }
+
+
+        Log.d("email",email.editText?.text.toString())
+        mAuth.signInWithEmailAndPassword(email.editText?.text.toString(),password.editText?.text.toString()).addOnFailureListener{
+                            loginDialogFragment = LoginDialogFragment(it.message)
+                            loginDialogFragment.show(this.supportFragmentManager,"A")
+        }.addOnCompleteListener {
+
+        }
+    }
 }

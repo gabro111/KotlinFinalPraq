@@ -8,5 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="mainTextColor">#504F60</color>
+    <color name="primarySwab"> #FBB034 </color>
+    <color name="primarySwabVariant"> #FFDD00 </color>
 
 </resources>
