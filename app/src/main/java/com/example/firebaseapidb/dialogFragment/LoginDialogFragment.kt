@@ -7,13 +7,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 
 
-class LoginDialogFragment(errorText:String?) : DialogFragment() {
+class LoginDialogFragment(errorText:String?,dialogMessage:String) : DialogFragment() {
     private val text =  errorText
+    private val messageText = dialogMessage
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(it)
-            builder.setMessage("Login unsuccessful")
+            builder.setMessage(messageText)
                 .setMessage(text)
                 .setNegativeButton("ok",
                     DialogInterface.OnClickListener { dialog, id ->

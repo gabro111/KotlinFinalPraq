@@ -6,7 +6,9 @@ import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.firebaseapidb.MainActivity
 import com.example.firebaseapidb.R
 import com.example.firebaseapidb.dialogFragment.LoginDialogFragment
 import com.google.android.material.textfield.TextInputLayout
@@ -17,6 +19,7 @@ import com.google.firebase.ktx.Firebase
 class LoginActivity:AppCompatActivity(R.layout.activity_login) {
     private lateinit var mAuth:FirebaseAuth
     private lateinit var loginButton: Button
+    private lateinit var forgotPassword:TextView;
     private lateinit var email:TextInputLayout
     private lateinit var password:TextInputLayout
     private lateinit var imageButton : ImageButton
@@ -29,6 +32,7 @@ class LoginActivity:AppCompatActivity(R.layout.activity_login) {
         email = findViewById(R.id.textInputEmailLayout)
         imageButton = findViewById(R.id.imageButtonSignIn)
         password=findViewById(R.id.textInputPasswordLayout)
+        forgotPassword=findViewById(R.id.forgotPasswordView)
         registerPageTextView = findViewById(R.id.createAccountButton)
         registerPageTextView.setOnClickListener {
             val intent  = Intent(this,RegisterActivity::class.java)
@@ -37,6 +41,11 @@ class LoginActivity:AppCompatActivity(R.layout.activity_login) {
         }
         imageButton.setOnClickListener {
             signIn()
+        }
+
+        forgotPassword.setOnClickListener {
+            val intent  = Intent(this,ForgotPasswordActivity::class.java)
+            startActivity(intent)
         }
 
     }
@@ -56,13 +65,13 @@ class LoginActivity:AppCompatActivity(R.layout.activity_login) {
             return
         }
 
-
-        Log.d("email",email.editText?.text.toString())
-        mAuth.signInWithEmailAndPassword(email.editText?.text.toString(),password.editText?.text.toString()).addOnFailureListener{
-                            loginDialogFragment = LoginDialogFragment(it.message)
+        mAuth.signInWithEmailAndPassword(email.editText?.text.toString(),password.editText?.text.toString())
+            .addOnFailureListener{
+                            loginDialogFragment = LoginDialogFragment(it.message,"Login Failed")
                             loginDialogFragment.show(this.supportFragmentManager,"A")
         }.addOnCompleteListener {
-
+            startActivity(Intent(this,MainActivity::class.java))
+                finish()
         }
     }
 }
