@@ -1,9 +1,11 @@
 package com.example.firebaseapidb.model
 
-import java.io.FileDescriptor
+import android.net.Uri
 
 data class FoodPost(
-    val title:String,
-    val descriptor: String,
-    val recipe:String
+    var uploaderId:String = "",
+    var title:String = "",
+    var description: String = "",
+    var recipe:String = "",
+    var imgUri: String = ""
 )

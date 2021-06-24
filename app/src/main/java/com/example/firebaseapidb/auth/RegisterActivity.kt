@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firebaseapidb.R
 import com.example.firebaseapidb.dialogFragment.LoginDialogFragment
+import com.example.firebaseapidb.model.FoodUser
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -81,20 +82,15 @@ class RegisterActivity:AppCompatActivity(R.layout.activity_register) {
 
         mAuth.createUserWithEmailAndPassword( textInputEmailRegisterLayout.editText?.text.toString(),textInputPasswordRegisterLayout.editText?.text.toString())
             .addOnSuccessListener {
-                val user: MutableMap<String, Any> = HashMap()
-                user["id"] = mAuth.currentUser?.uid.toString()
+                val foodUser = FoodUser(mAuth.currentUser?.uid.toString())
                 val db = Firebase.firestore
-                db.collection("users").add(user)
+                db.collection("users").add(foodUser)
                 builder.show()
-
-
-
 
             }
             .addOnFailureListener {
                 loginDialogFragment = LoginDialogFragment(it.message,"Registration Failed")
                 loginDialogFragment.show(this.supportFragmentManager,"A")
-
             }
 
     }

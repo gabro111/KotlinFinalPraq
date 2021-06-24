@@ -8,16 +8,18 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+   >
 
-    
 
     <ImageButton
-        android:background="@drawable/gradient_background"
         android:id="@+id/choosePictureBtn"
         android:layout_width="320dp"
         android:layout_height="220dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="88dp"
+        android:background="@drawable/gradient_background"
+        android:backgroundTint="@android:color/holo_orange_light"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,22 +31,24 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
         android:hint="@string/title"
-        app:layout_constraintEnd_toEndOf="parent"
 
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/choosePictureBtn"
         app:layout_constraintWidth_percent="0.77">
 
 
-    <EditText
+        <EditText
 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-        android:imeOptions="actionNext"
-        android:inputType="textEmailAddress"
-        android:textSize="22sp" />
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:textSize="22sp" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -115,6 +119,18 @@
         app:layout_constraintStart_toStartOf="@+id/choosePictureBtn"
         app:layout_constraintTop_toTopOf="@+id/choosePictureBtn" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:progress="@android:integer/config_shortAnimTime"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

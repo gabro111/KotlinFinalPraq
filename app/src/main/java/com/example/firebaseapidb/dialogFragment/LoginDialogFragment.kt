@@ -15,7 +15,7 @@ class LoginDialogFragment(errorText:String?,dialogMessage:String) : DialogFragme
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(it)
             builder.setMessage(messageText)
-                .setMessage(text)
+                .setTitle(text)
                 .setNegativeButton("ok",
                     DialogInterface.OnClickListener { dialog, id ->
                         // User cancelled the dialog

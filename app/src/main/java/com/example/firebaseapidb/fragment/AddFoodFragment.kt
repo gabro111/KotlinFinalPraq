@@ -1,50 +1,106 @@
 package com.example.firebaseapidb.fragment
 
-import android.content.ContentResolver
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.app.ProgressDialog
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.contentValuesOf
 import androidx.fragment.app.Fragment
 import com.example.firebaseapidb.R
+import com.example.firebaseapidb.dialogFragment.LoginDialogFragment
+import com.example.firebaseapidb.model.FoodPost
 import com.example.firebaseapidb.service.FirebaseStorageService
-import com.google.firebase.firestore.ktx.firestore
+import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import com.google.firebase.storage.ktx.storageMetadata
+import java.io.ByteArrayOutputStream
+
 
 class AddFoodFragment: Fragment(R.layout.fragment_add_food) {
-
+private val firebaseStorageService:FirebaseStorageService = FirebaseStorageService()
 private lateinit var choosePictureBtn:ImageButton
+private lateinit var publishButton:Button
+private lateinit var textInputRecipeLayout:TextInputLayout
+private lateinit var textInputDescriptionLayout:TextInputLayout
+private lateinit var textInputTitleLayout:TextInputLayout
+private lateinit var progressBar: ProgressBar
+    var foodPost = FoodPost()
+    var auth = Firebase.auth
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var metadata = storageMetadata {
-            contentType = "image/jpg"
-        }
-        val firebaseStorageService: FirebaseStorageService = FirebaseStorageService()
         choosePictureBtn = view.findViewById(R.id.choosePictureBtn)
+        publishButton = view.findViewById(R.id.publishButton)
+        progressBar = view.findViewById(R.id.progressBar)
 
-
-
-
+        textInputTitleLayout = view.findViewById(R.id.textInputTitleLayout)
+        textInputRecipeLayout = view.findViewById(R.id.textInputRecipeLayout)
+        textInputDescriptionLayout = view.findViewById(R.id.textInputDescriptionLayout)
         val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-
-           choosePictureBtn.setImageURI(uri)
             if (uri != null) {
-                firebaseStorageService.savePicture(uri)
+                choosePictureBtn.setImageURI(uri)
             }
         }
         choosePictureBtn.setOnClickListener {
         getContent.launch("image/*")
         }
+        publishButton.setOnClickListener {
+
+
+            validateInputAndSave()
+
+        }
+
     }
+
+  private fun validateInputAndSave(){
+
+        val title = textInputTitleLayout.editText?.text.toString()
+        val recipe = textInputRecipeLayout.editText?.text.toString()
+        val description = textInputDescriptionLayout.editText?.text.toString()
+
+        if(title.isEmpty() || recipe.isEmpty() || description.isEmpty()){
+            val loginDialogFragment : LoginDialogFragment = LoginDialogFragment("Error","Not All Fields Are Filled")
+            loginDialogFragment.show(this.childFragmentManager,"Error")
+        return
+        }
+
+        if(choosePictureBtn.drawable == null) {
+            val loginDialogFragment : LoginDialogFragment = LoginDialogFragment("Error","Choose a picture")
+            loginDialogFragment.show(this.childFragmentManager,"Error")
+
+            return
+        }
+        foodPost.title = title
+        foodPost.description = description
+        foodPost.recipe = recipe
+        foodPost.uploaderId = auth.currentUser?.uid.toString()
+
+      //asd
+      val bitmap = (choosePictureBtn.drawable as BitmapDrawable).bitmap
+      val baos = ByteArrayOutputStream()
+      bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+      val data = baos.toByteArray()
+
+
+
+
+      context?.let {
+          firebaseStorageService.storeFoodRecommendation(post = foodPost,
+              it,progressBar,data)
+      }
+      textInputTitleLayout.editText?.text?.clear()
+      textInputRecipeLayout.editText?.text?.clear()
+      textInputDescriptionLayout.editText?.text?.clear()
+      foodPost = FoodPost()
+
+  }
 
 
 

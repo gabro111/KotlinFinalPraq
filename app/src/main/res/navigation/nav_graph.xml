@@ -15,5 +15,11 @@
     <fragment
         android:id="@+id/addFoodFragment"
         android:name="com.example.firebaseapidb.fragment.AddFoodFragment"
-        android:label="AddFoodFragment" />
+        android:label="AddFoodFragment" >
+        <action
+            android:id="@+id/action_addFoodFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:launchSingleTop="true" />
+    </fragment>
 </navigation>
