@@ -7,5 +7,6 @@ data class FoodPost(
     var title:String = "",
     var description: String = "",
     var recipe:String = "",
-    var imgUri: String = ""
+    var localImgUri: String = "",
+    var remoteImgUri:String = ""
 )
