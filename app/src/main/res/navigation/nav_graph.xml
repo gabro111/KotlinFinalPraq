@@ -2,12 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/tabLayoutFragment">
 
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.firebaseapidb.fragment.HomeFragment"
-        android:label="HomeFragment" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.firebaseapidb.fragment.SettingsFragment"
@@ -15,11 +11,9 @@
     <fragment
         android:id="@+id/addFoodFragment"
         android:name="com.example.firebaseapidb.fragment.AddFoodFragment"
-        android:label="AddFoodFragment" >
-        <action
-            android:id="@+id/action_addFoodFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:launchSingleTop="true" />
-    </fragment>
+        android:label="AddFoodFragment" />
+    <fragment
+        android:id="@+id/tabLayoutFragment"
+        android:name="com.example.firebaseapidb.fragment.TabLayoutFragment"
+        android:label="TabLayoutFragment" />
 </navigation>

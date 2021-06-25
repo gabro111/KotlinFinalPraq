@@ -64,6 +64,4 @@ class FirebaseStorageService {
                     }).show()
             }
     }
-
-    fun getStoreRecommendations(){}
 }
