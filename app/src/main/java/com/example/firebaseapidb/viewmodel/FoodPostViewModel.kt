@@ -23,6 +23,7 @@ class FoodPostViewModel : ViewModel() {
         db = Firebase.firestore
         auth = Firebase.auth
         loadUser()
+        loadFavoritePosts()
 
     }
 
@@ -35,11 +36,7 @@ class FoodPostViewModel : ViewModel() {
             loadPosts()
         }
     }
-    private val userFavoritePosts:MutableLiveData<List<FoodPost>> by lazy {
-        MutableLiveData<List<FoodPost>>().also {
-            loadFavoritePosts()
-        }
-    }
+    private val userFavoritePosts:MutableLiveData<List<FoodPost>> = MutableLiveData()
     private val userLoggedUser: MutableLiveData<FoodUser>  = MutableLiveData()
 
 

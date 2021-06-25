@@ -23,15 +23,21 @@ class TabLayoutFragment: Fragment(R.layout.tab_layout_container) {
         viewPager = view.findViewById(R.id.pager)
         tabLayout = view.findViewById(R.id.tab_layout)
        mainFragmentAdapter = MainFragmentAdapter(this)
+        viewPager.requestDisallowInterceptTouchEvent(true)
 
         viewPager.adapter =mainFragmentAdapter
         TabLayoutMediator(tabLayout,viewPager){tab,position ->
-if(position == 0){
+        if(position == 0){
     tab.text = "FoodRec"
-}else{
+            }else{
     tab.text = "Favorites"
-}
+        }
         }.attach()
+
+        tabLayout.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+
+
+        }
 
     }
 }
