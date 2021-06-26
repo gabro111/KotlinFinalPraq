@@ -17,10 +17,10 @@ import com.example.firebaseapidb.viewmodel.FoodPostViewModel
 class SecondRecyclerViewAdapter(private val foodPost: MutableList<FoodPost>,private val model: FoodPostViewModel):RecyclerView.Adapter<SecondRecyclerViewAdapter.SecondRecyclerViewHolder>()  {
 
     class SecondRecyclerViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
-        val recyclerImage: ImageView = itemView.findViewById(R.id.secondRecyclerImage)
-        val recyclerTitle: TextView = itemView.findViewById(R.id.secondRecyclerTitle)
-        val recyclerDescription: TextView = itemView.findViewById(R.id.secondRecyclerDescription)
-        val favoriteButton: ImageButton = itemView.findViewById(R.id.secondFavoriteButton)
+        val recyclerImage: ImageView = itemView.findViewById(R.id.recyclerImage)
+        val recyclerTitle: TextView = itemView.findViewById(R.id.recyclerTitle)
+        val recyclerDescription: TextView = itemView.findViewById(R.id.recyclerDescription)
+        val favoriteButton: ImageButton = itemView.findViewById(R.id.favoriteButton)
 
 
 
@@ -28,7 +28,7 @@ class SecondRecyclerViewAdapter(private val foodPost: MutableList<FoodPost>,priv
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SecondRecyclerViewHolder {
         return SecondRecyclerViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.second_recycler_view_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_item, parent, false)
         )
     }
 

@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/tabLayoutFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/settingsFragment"
@@ -13,7 +13,11 @@
         android:name="com.example.firebaseapidb.fragment.AddFoodFragment"
         android:label="AddFoodFragment" />
     <fragment
-        android:id="@+id/tabLayoutFragment"
-        android:name="com.example.firebaseapidb.fragment.TabLayoutFragment"
-        android:label="TabLayoutFragment" />
+        android:id="@+id/homeFragment"
+        android:name="com.example.firebaseapidb.fragment.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/homeFragmentSecond"
+        android:name="com.example.firebaseapidb.fragment.HomeFragmentSecond"
+        android:label="HomeFragmentSecond" />
 </navigation>

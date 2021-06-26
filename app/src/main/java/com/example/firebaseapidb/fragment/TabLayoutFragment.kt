@@ -34,10 +34,6 @@ class TabLayoutFragment: Fragment(R.layout.tab_layout_container) {
         }
         }.attach()
 
-        tabLayout.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-
-
-        }
 
     }
 }

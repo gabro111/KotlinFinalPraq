@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firebaseapidb.R
@@ -18,7 +20,7 @@ class HomeFragmentSecond: Fragment(R.layout.fragment_home_second) {
     private lateinit var recyclerView : RecyclerView
     private  var _foodPosts = ArrayList<FoodPost>()
 
-    private val model: FoodPostViewModel by viewModels()
+    private val model: FoodPostViewModel = FoodPostViewModel()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,6 +30,7 @@ class HomeFragmentSecond: Fragment(R.layout.fragment_home_second) {
         val secondRecyclerViewAdapter = SecondRecyclerViewAdapter(_foodPosts,model)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = secondRecyclerViewAdapter
+        recyclerView.itemAnimator= DefaultItemAnimator()
 
         model.getFavoritePosts().observe(viewLifecycleOwner, { foodPosts ->
             _foodPosts.removeAll(_foodPosts)

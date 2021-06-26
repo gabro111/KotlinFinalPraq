@@ -1,10 +1,12 @@
 package com.example.firebaseapidb.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.firebaseapidb.model.FoodPost
 import com.example.firebaseapidb.model.FoodUser
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,13 +38,17 @@ class FoodPostViewModel : ViewModel() {
             loadPosts()
         }
     }
-    private val userFavoritePosts:MutableLiveData<List<FoodPost>> = MutableLiveData()
+    private val userFavoritePosts:MutableLiveData<List<FoodPost>> by lazy {
+        MutableLiveData<List<FoodPost>>().also {
+            loadFavoritePosts()
+        }
+    }
     private val userLoggedUser: MutableLiveData<FoodUser>  = MutableLiveData()
 
 
     //Setters/Loaders
     private fun loadFavoritePosts() {
-        val holder :MutableList<FoodPost> = ArrayList()
+        val holder : MutableList<FoodPost> = ArrayList()
         db.collection("users")
             .get()
             .addOnSuccessListener { documents ->
@@ -91,23 +97,37 @@ class FoodPostViewModel : ViewModel() {
     }
 
     //Extended Functions / Helper Functions
-    fun addToFavorite(foodPost: FoodPost){
-        val loggedUser = userLoggedUser.value
-        loggedUser?.favoritePost?.add(foodPost)
-        if (loggedUser != null) {
-            db.collection("users")
-                .document(loggedUser.uId)
-                .set(loggedUser)
-        }
-    }
-    fun removeFromFavorite(foodPost: FoodPost){
+
+    fun removeFromFavorite(foodPost: FoodPost): Task<Void> {
         val loggedUser = userLoggedUser.value
         loggedUser?.favoritePost?.remove(foodPost)
-        if (loggedUser != null) {
-            db.collection("users")
-                .document(loggedUser.uId)
-                .set(loggedUser)
-        }
+
+        return db.collection("users")
+            .document(loggedUser!!.uId)
+            .set(loggedUser)
+    }
+
+     fun updateFavoritePosts(foodPost:FoodPost) {
+        val holder : MutableList<FoodPost> = ArrayList()
+        db.collection("users")
+            .get()
+            .addOnSuccessListener { documents ->
+
+                for(document in documents){
+
+                    val item  = document.toObject<FoodUser>()
+                    if(item.uId == auth.currentUser?.uid){
+                        item.favoritePost.add(foodPost)
+                        holder.addAll(item.favoritePost)
+                    }
+
+
+                }
+
+                userFavoritePosts.value = holder
+                Log.d("Data Updated",userFavoritePosts.value!!.toString())
+
+            }
     }
 
 
@@ -115,12 +135,14 @@ class FoodPostViewModel : ViewModel() {
 
 
     //Getters
-    fun getFavoritePosts():MutableLiveData<List<FoodPost>>{
+    fun getFavoritePosts():LiveData<List<FoodPost>>{
         return userFavoritePosts
     }
     fun getPosts(): LiveData<List<FoodPost>> {
         return foodPosts
     }
+
+
     fun getUser(): LiveData<FoodUser> {
         return userLoggedUser
     }

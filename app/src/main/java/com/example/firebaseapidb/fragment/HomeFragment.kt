@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,23 +28,47 @@ private lateinit var recyclerView : RecyclerView
     private val model: FoodPostViewModel by viewModels()
 private lateinit var progressBar2:ProgressBar
 private  var _foodPosts = ArrayList<FoodPost>()
+    private var _favoritePosts = ArrayList<FoodPost>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.recyclerViewMain)
         progressBar2 = view.findViewById(R.id.progressBar2)
 
-        val recyclerViewAdapter = RecyclerViewAdapter(_foodPosts,model)
+        val recyclerViewAdapter = RecyclerViewAdapter(_foodPosts,_favoritePosts,model)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = recyclerViewAdapter
-        progressBar2.visibility = ProgressBar.GONE
-
         recyclerView.itemAnimator= DefaultItemAnimator()
-        model.getPosts().observe(viewLifecycleOwner, { foodPosts ->
-            _foodPosts.removeAll(_foodPosts)
-            _foodPosts.addAll(foodPosts)
-            recyclerView.adapter!!.notifyDataSetChanged()
+
+
+        model.getFavoritePosts().observe(viewLifecycleOwner,{favoritePosts ->
+            _favoritePosts.removeAll(_favoritePosts)
+            _favoritePosts.addAll(favoritePosts)
+
+            model.getPosts().observe(viewLifecycleOwner,{foodPosts ->
+                progressBar2.visibility = ProgressBar.GONE
+                _foodPosts.removeAll(_foodPosts)
+                _foodPosts.addAll(foodPosts)
+                recyclerView.adapter!!.notifyDataSetChanged()
+            })
+
+
         })
+
+
+//        model.getPosts().observe(viewLifecycleOwner, { foodPosts ->
+//
+//            model.getFavoritePosts().observe(viewLifecycleOwner,{favoritePosts ->
+//                _foodPosts.removeAll(_foodPosts)
+//                _foodPosts.addAll(foodPosts)
+//                _favoritePosts.removeAll(_favoritePosts)
+//                _favoritePosts.addAll(favoritePosts)
+//                progressBar2.visibility = ProgressBar.GONE
+//                recyclerView.adapter!!.notifyDataSetChanged()
+//
+//            })
+//
+//        })
 
     }
 
