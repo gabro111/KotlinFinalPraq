@@ -1,10 +1,10 @@
 # FoodCrunchy
 
 FoodCrunchy is a food recommendation app, which consists of enthusiastic
-users who share different types of food with their recipes.
+users who share different types of food with their comments.
 
-Users can post a meal/dish consisting of a name, description, recipe and a picture showcasing
-their food - Which other users can view, rate (from 1 to 5 stars) and/or add to favourites.
+Users can post a meal/dish consisting of a name, description, comment and a picture showcasing
+their food - Which other users can view and add to favourites.
 
 
 ## Current version and additional information
@@ -23,9 +23,9 @@ Aside of which, it can be installed with an Android Package File (apk).
 Upon installation, you'll be greeted with a Login/Registration UI form.
 
 An account is necessary to browse selections.
-Without an account, users can not access other user's shared recipes.
+Without an account, users can not access other user's shared food reccomendations.
 
-Once you're logged in, you can access FoodCrunchy's full base of food recipes. 
+Once you're logged in, you can access FoodCrunchy's full base of food posts. 
 
 
 ## Updates and Contributing
