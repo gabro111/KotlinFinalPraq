@@ -9,7 +9,7 @@ their food - Which other users can view, rate (from 1 to 5 stars) and/or add to 
 
 ## Current version and additional information
 
-Version: 1.0, first release (28/06/21). 
+Version: 0.1A, first alpha release (28/06/21). 
 
 
 ## Installation
