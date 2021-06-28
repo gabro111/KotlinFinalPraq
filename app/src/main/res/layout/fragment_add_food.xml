@@ -14,11 +14,10 @@
 
     <ImageButton
         android:id="@+id/choosePictureBtn"
-        android:layout_width="320dp"
-        android:layout_height="220dp"
+        android:layout_width="224dp"
+        android:layout_height="192dp"
         android:layout_marginTop="64dp"
-        android:background="@drawable/gradient_background"
-        android:backgroundTint="@android:color/holo_orange_light"
+        android:foregroundTint="@android:color/holo_orange_light"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +46,7 @@
 
             android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
-            android:textSize="22sp" />
+            android:textSize="17sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,7 +70,7 @@
 
             android:imeOptions="actionNext"
             android:inputType="textShortMessage"
-            android:textSize="22sp" />
+            android:textSize="17sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -88,11 +87,12 @@
 
 
         <EditText
+            android:gravity="start|top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"
             android:inputType="textMultiLine"
-            android:textSize="22sp" />
+            android:textSize="17sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -100,14 +100,58 @@
         android:id="@+id/publishButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="64dp"
         android:text="publish"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputRecipeLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/publishButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputRecipeLayout">
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2" />
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3" />
+
+        <RadioButton
+            android:id="@+id/radioButton4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="4" />
+
+        <RadioButton
+            android:id="@+id/radioButton5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="5" />
+
+    </RadioGroup>
 
     <TextView
         android:id="@+id/textView7"

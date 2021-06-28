@@ -1,25 +1,25 @@
 package com.example.firebaseapidb.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.firebaseapidb.R
+import com.example.firebaseapidb.fragment.HomeFragmentDirections
 import com.example.firebaseapidb.model.FoodPost
-import com.example.firebaseapidb.model.FoodUser
-import com.example.firebaseapidb.service.FirebaseStorageService
 import com.example.firebaseapidb.viewmodel.FoodPostViewModel
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
 class RecyclerViewAdapter(private val foodPost: List<FoodPost>,private val favoritePosts:List<FoodPost>,
                           private val model: FoodPostViewModel) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
+
+    val auth = Firebase.auth
 
 
         class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -27,6 +27,7 @@ class RecyclerViewAdapter(private val foodPost: List<FoodPost>,private val favor
             val recyclerTitle:TextView = itemView.findViewById(R.id.recyclerTitle)
             val recyclerDescription:TextView = itemView.findViewById(R.id.recyclerDescription)
             val favoriteButton:ImageButton = itemView.findViewById(R.id.favoriteButton)
+            val ratingView:TextView = itemView.findViewById(R.id.ratingView)
 
 
     }
@@ -41,34 +42,42 @@ class RecyclerViewAdapter(private val foodPost: List<FoodPost>,private val favor
     }
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        if(favoritePosts.contains(foodPost[position])){
-            holder.favoriteButton.setImageResource( R.drawable.ic_round_star_24)
-        }else
-        {
-            holder.favoriteButton.setImageResource( R.drawable.ic_round_star_border_24)
+
+        holder.itemView.setOnClickListener {
+           val action = HomeFragmentDirections.actionHomeFragmentToFoodDetailFragment(foodTitle = foodPost[position].title,foodDescription = foodPost[position].description
+            ,foodImgUrl = foodPost[position].remoteImgUri,foodRecipe = foodPost[position].recipe,foodRating = foodPost[position].rating)
+            holder.itemView.findNavController().navigate(action)
         }
+
+        if(auth.currentUser!!.uid != foodPost[position].uploaderId) {
+            if (favoritePosts.contains(foodPost[position])) {
+                holder.favoriteButton.setImageResource(R.drawable.ic_round_star_24)
+            } else {
+                holder.favoriteButton.setImageResource(R.drawable.ic_round_star_border_24)
+            }
+        }else{
+            holder.favoriteButton.setImageResource(R.drawable.ic_round_remove_circle_24)
+        }
+        Glide.with(holder.itemView)
+            .load(foodPost[position].remoteImgUri)
+            .override(250, 350)
+            .into(holder.recyclerImage)
+        holder.ratingView.text = foodPost[position].rating.toString()
         holder.recyclerDescription.text = foodPost[position].description
         holder.recyclerTitle.text = foodPost[position].title
         holder.favoriteButton.setOnClickListener {
-        model.updateFavoritePosts(foodPost[position])
-            notifyDataSetChanged()
-//            if(favoritePosts.contains(foodPost[position-1])){
-//                val task = model.removeFromFavorite(foodPost[position])
-//                task.addOnSuccessListener{
-//                    foodPost = model.getFavoritePosts().value!!
-//                    holder.favoriteButton.setImageResource( R.drawable.ic_round_star_border_24)
-//                }
-//            }
-//
-//            if(!favoritePosts.contains(foodPost[position])){
-//                val task = model.addToFavorite(foodPost[position])
-//                task.addOnSuccessListener {
-//                    foodPost = model.getFavoritePosts().value!!
-//                    holder.favoriteButton.setImageResource( R.drawable.ic_round_star_24)
-//                }
-//
-//            }
 
+
+            if(auth.currentUser!!.uid != foodPost[position].uploaderId) {
+                if (!favoritePosts.contains(foodPost[position])) {
+                    model.updateUserFavoritePosts(foodPost[position])
+
+                } else {
+                    model.deleteUserFavoritePosts(foodPost[position])
+                }
+            }else{
+                model.deletePost(foodPost[position])
+            }
 
     }
 

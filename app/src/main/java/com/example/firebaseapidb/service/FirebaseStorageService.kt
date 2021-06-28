@@ -24,6 +24,8 @@ class FirebaseStorageService {
     private val storage = Firebase.storage
     private val storeRef = storage.reference
 
+
+
     private fun savePicture(uri:Uri,post:FoodPost){
 //         With bytes
 //        storage.reference.child("images/${auth.currentUser?.uid}/${}").putBytes(data)
@@ -39,64 +41,17 @@ class FirebaseStorageService {
 
     }
 
+    private fun deletePicture(uri:Uri,post: FoodPost){
+        val imageRef = storeRef.child("images/${auth.currentUser?.uid}/${uri.lastPathSegment}")
+        imageRef.delete()
+    }
     private fun updateDatabase(post: FoodPost) {
         db.collection("posts")
             .document(post.title)
             .set(post)
     }
-
-
-
-     fun taskToGetUser(): Task<DocumentSnapshot> {
-        val loggedUser = auth.currentUser?.uid
-        return db.collection("users").document(loggedUser!!).get()
-    }
-//    fun getFavoriteService() : List<FoodPost>{
-//        var userASD = FoodUser()
-//
-//
-//    }
-
-    fun addToFav(foodPost: FoodPost): Task<DocumentSnapshot> {
-
-        return taskToGetUser().addOnSuccessListener { user ->
-
-            user.toObject<FoodUser>()?.let { taskToAddToFavorite(foodPost, it) }
-        }
-    }
-
-
-    private fun taskToAddToFavorite(foodPost: FoodPost, user: FoodUser): Task<Void> {
-        user.favoritePost.add(foodPost)
-       return db.collection("user").document(user.uId).set(user)
-    }
-
-
-    fun addToFavorite(foodPost: FoodPost) {
-        val loggedUser = auth.currentUser?.uid
-
-        db.collection("users").document(loggedUser!!).get().addOnSuccessListener { user ->
-        val userASD = user.toObject<FoodUser>()
-
-            userASD?.favoritePost?.add(foodPost)
-            if (userASD != null) {
-                db.collection("users")
-                    .document(loggedUser)
-                    .set(userASD).addOnSuccessListener {
-                        return@addOnSuccessListener
-                    }
-            }
-
-
-        }
-
-
-    }
-
     fun storeFoodRecommendation(post:FoodPost,context: Context,progressBar: ProgressBar){
         progressBar.visibility = View.VISIBLE
-        //TODO add check if post exists
-
         db.collection("posts").document(post.title).set(post, SetOptions.merge())
             .addOnSuccessListener {
                 savePicture(Uri.parse(post.localImgUri),post)

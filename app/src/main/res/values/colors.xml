@@ -10,5 +10,6 @@
     <color name="mainTextColor">#504F60</color>
     <color name="primarySwab"> #FBB034 </color>
     <color name="primarySwabVariant"> #FFDD00 </color>
+    <color name="Red">#FF0000</color>
 
 </resources>

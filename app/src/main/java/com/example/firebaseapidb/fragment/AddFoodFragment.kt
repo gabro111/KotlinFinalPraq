@@ -2,10 +2,9 @@ package com.example.firebaseapidb.fragment
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ProgressBar
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,7 +20,7 @@ import com.google.firebase.ktx.Firebase
 
 class AddFoodFragment: Fragment(R.layout.fragment_add_food) {
 
-    val model: FoodPostViewModel by viewModels()
+    private lateinit var radioGroup:RadioGroup
     private val firebaseStorageService:FirebaseStorageService = FirebaseStorageService()
 private lateinit var choosePictureBtn:ImageButton
 private lateinit var publishButton:Button
@@ -36,10 +35,11 @@ private lateinit var progressBar: ProgressBar
         choosePictureBtn = view.findViewById(R.id.choosePictureBtn)
         publishButton = view.findViewById(R.id.publishButton)
         progressBar = view.findViewById(R.id.progressBar)
-
+        radioGroup = view.findViewById(R.id.radioGroup)
         textInputTitleLayout = view.findViewById(R.id.textInputTitleLayout)
         textInputRecipeLayout = view.findViewById(R.id.textInputRecipeLayout)
         textInputDescriptionLayout = view.findViewById(R.id.textInputDescriptionLayout)
+        radioGroup.check(R.id.radioButton)
         val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
                 foodPost.localImgUri = uri.toString()
@@ -64,6 +64,7 @@ private lateinit var progressBar: ProgressBar
         val recipe = textInputRecipeLayout.editText?.text.toString()
         val description = textInputDescriptionLayout.editText?.text.toString()
 
+      val radioButtonText = view?.findViewById<RadioButton>(radioGroup.checkedRadioButtonId)?.text.toString()
         if(title.isEmpty() || recipe.isEmpty() || description.isEmpty()){
             val loginDialogFragment : LoginDialogFragment = LoginDialogFragment("Error","Not All Fields Are Filled")
             loginDialogFragment.show(this.childFragmentManager,"Error")
@@ -76,6 +77,7 @@ private lateinit var progressBar: ProgressBar
 
             return
         }
+        foodPost.rating = radioButtonText.toInt()
         foodPost.title = title
         foodPost.description = description
         foodPost.recipe = recipe
@@ -94,6 +96,8 @@ private lateinit var progressBar: ProgressBar
           firebaseStorageService.storeFoodRecommendation(post = foodPost,
               it,progressBar)
       }
+
+      radioGroup.check(R.id.radioButton)
       textInputTitleLayout.editText?.text?.clear()
       textInputRecipeLayout.editText?.text?.clear()
       textInputDescriptionLayout.editText?.text?.clear()

@@ -34,7 +34,7 @@ private  var _foodPosts = ArrayList<FoodPost>()
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.recyclerViewMain)
         progressBar2 = view.findViewById(R.id.progressBar2)
-
+        val action =    HomeFragmentDirections
         val recyclerViewAdapter = RecyclerViewAdapter(_foodPosts,_favoritePosts,model)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = recyclerViewAdapter
@@ -56,19 +56,7 @@ private  var _foodPosts = ArrayList<FoodPost>()
         })
 
 
-//        model.getPosts().observe(viewLifecycleOwner, { foodPosts ->
-//
-//            model.getFavoritePosts().observe(viewLifecycleOwner,{favoritePosts ->
-//                _foodPosts.removeAll(_foodPosts)
-//                _foodPosts.addAll(foodPosts)
-//                _favoritePosts.removeAll(_favoritePosts)
-//                _favoritePosts.addAll(favoritePosts)
-//                progressBar2.visibility = ProgressBar.GONE
-//                recyclerView.adapter!!.notifyDataSetChanged()
-//
-//            })
-//
-//        })
+
 
     }
 

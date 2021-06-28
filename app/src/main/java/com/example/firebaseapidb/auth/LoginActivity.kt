@@ -67,9 +67,9 @@ class LoginActivity:AppCompatActivity(R.layout.activity_login) {
 
         mAuth.signInWithEmailAndPassword(email.editText?.text.toString(),password.editText?.text.toString())
             .addOnFailureListener{
-                            loginDialogFragment = LoginDialogFragment(it.message,"Login Failed")
+                            loginDialogFragment = LoginDialogFragment("Login Failed", it.message!!)
                             loginDialogFragment.show(this.supportFragmentManager,"A")
-        }.addOnCompleteListener {
+        }.addOnSuccessListener {
             startActivity(Intent(this,MainActivity::class.java))
                 finish()
         }

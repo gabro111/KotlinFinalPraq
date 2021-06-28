@@ -1,22 +1,17 @@
 package com.example.firebaseapidb.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.firebaseapidb.R
-import com.example.firebaseapidb.adapter.RecyclerViewAdapter
 import com.example.firebaseapidb.adapter.SecondRecyclerViewAdapter
 import com.example.firebaseapidb.model.FoodPost
 import com.example.firebaseapidb.viewmodel.FoodPostViewModel
 
-class HomeFragmentSecond: Fragment(R.layout.fragment_home_second) {
+class FavoriteFragment: Fragment(R.layout.fragment_favorite) {
     private lateinit var recyclerView : RecyclerView
     private  var _foodPosts = ArrayList<FoodPost>()
 

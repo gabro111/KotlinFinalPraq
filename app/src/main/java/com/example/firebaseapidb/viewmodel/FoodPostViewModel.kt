@@ -1,6 +1,5 @@
 package com.example.firebaseapidb.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +11,11 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
+
 //First Time Using Android View Model
 
 // TODO: Think Of Logic How To Add Loaders
@@ -20,10 +23,12 @@ class FoodPostViewModel : ViewModel() {
     private lateinit var  db:FirebaseFirestore
     private lateinit var auth:FirebaseAuth
 
+
     //initialize on first call of ViewModel
     init {
         db = Firebase.firestore
         auth = Firebase.auth
+
         loadUser()
         loadFavoritePosts()
 
@@ -97,40 +102,95 @@ class FoodPostViewModel : ViewModel() {
     }
 
     //Extended Functions / Helper Functions
+    private fun updateUserCollection(foodUser:FoodUser): Task<Void> {
 
-    fun removeFromFavorite(foodPost: FoodPost): Task<Void> {
-        val loggedUser = userLoggedUser.value
-        loggedUser?.favoritePost?.remove(foodPost)
+    return db.collection("users")
+        .document(foodUser.uId)
+        .set(foodUser)
 
-        return db.collection("users")
-            .document(loggedUser!!.uId)
-            .set(loggedUser)
+}
+    private fun deletePostDocument(foodPost: FoodPost): Task<Void> {
+
+        return db.collection("posts")
+            .document(foodPost.title)
+            .delete().addOnSuccessListener { return@addOnSuccessListener }
+
     }
+    fun updateUserFavoritePosts(foodPost:FoodPost) {
 
-     fun updateFavoritePosts(foodPost:FoodPost) {
         val holder : MutableList<FoodPost> = ArrayList()
         db.collection("users")
             .get()
             .addOnSuccessListener { documents ->
 
-                for(document in documents){
+                for(document in documents) {
+                    val user = document.toObject<FoodUser>()
+//                      Why?
+                    if (user.uId == auth.currentUser?.uid) {
 
-                    val item  = document.toObject<FoodUser>()
-                    if(item.uId == auth.currentUser?.uid){
-                        item.favoritePost.add(foodPost)
-                        holder.addAll(item.favoritePost)
+
+                        user.favoritePost.add(foodPost)
+                        val updateData = updateUserCollection(user)
+                        updateData.addOnSuccessListener {
+                            return@addOnSuccessListener
+                        }
+                        holder.addAll(user.favoritePost)
+
                     }
-
-
                 }
-
                 userFavoritePosts.value = holder
-                Log.d("Data Updated",userFavoritePosts.value!!.toString())
 
             }
     }
+    fun deleteUserFavoritePosts(foodPost: FoodPost){
+        val holder : MutableList<FoodPost> = ArrayList()
+        db.collection("users")
+            .get()
+            .addOnSuccessListener { documents ->
+
+                for(document in documents) {
+                    val user = document.toObject<FoodUser>()
+
+                    if (user.uId == auth.currentUser?.uid) {
+                        user.favoritePost.remove(foodPost)
+                        val updateData = updateUserCollection(user)
+                        updateData.addOnSuccessListener {
+                            return@addOnSuccessListener
+                        }
+                        holder.addAll(user.favoritePost)
+
+                    }
+                }
+                userFavoritePosts.value = holder
+
+            }
+    }
+    fun deletePost(foodPost: FoodPost) {
+        val holder : MutableList<FoodPost> = ArrayList()
+        val task = deletePostDocument(foodPost)
+        task.addOnSuccessListener {
+            db.collection("posts").get().addOnSuccessListener {  documents ->
+                val hs = documents.toObjects<FoodPost>()
+                holder.addAll(hs)
+                foodPosts.value = holder
+        }
+            }
+        db.collection("users").get().addOnSuccessListener {  document ->
+            val users = document.toObjects<FoodUser>()
+            for(user in users){
+                if(user.favoritePost.contains(foodPost)){
+                   user.favoritePost.remove(foodPost)
+                    val updateData = updateUserCollection(user)
+                    updateData.addOnSuccessListener {
+                        return@addOnSuccessListener
+                    }
+                }
+            }
 
 
+        }
+
+    }
 
 
 
@@ -141,13 +201,13 @@ class FoodPostViewModel : ViewModel() {
     fun getPosts(): LiveData<List<FoodPost>> {
         return foodPosts
     }
-
-
     fun getUser(): LiveData<FoodUser> {
         return userLoggedUser
     }
 
-    }
+
+
+}
 
 
 

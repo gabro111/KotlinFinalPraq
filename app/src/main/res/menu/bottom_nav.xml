@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/homeFragment" android:title="Home" android:icon="@drawable/ic_round_home_24" />
-    <item android:id="@+id/homeFragmentSecond" android:title="Homesecond" android:icon="@drawable/ic_round_home_24" />
+    <item android:id="@+id/favoriteFragment" android:title="Favorite" android:icon="@drawable/ic_round_star_24" />
     <item android:id="@+id/addFoodFragment" android:title="AddFood" android:icon="@drawable/ic_round_fastfood_24" />
     <item android:id="@+id/settingsFragment" android:title="Setting" android:icon="@drawable/ic_round_settings_24" />
 
