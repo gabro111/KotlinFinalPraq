@@ -9,7 +9,7 @@ their food - Which other users can view and add to favourites.
 
 ## Current version and additional information
 
-Version: 0.1A, first alpha release (28/06/21). 
+Version: 0.1-alpha, first alpha release (28/06/21). 
 
 
 ## Installation
