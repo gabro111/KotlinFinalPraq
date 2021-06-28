@@ -16,9 +16,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 
-//First Time Using Android View Model
 
-// TODO: Think Of Logic How To Add Loaders
 class FoodPostViewModel : ViewModel() {
     private lateinit var  db:FirebaseFirestore
     private lateinit var auth:FirebaseAuth
@@ -30,8 +28,6 @@ class FoodPostViewModel : ViewModel() {
         auth = Firebase.auth
 
         loadUser()
-        loadFavoritePosts()
-
     }
 
 
